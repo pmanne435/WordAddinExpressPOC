@@ -1,0 +1,183 @@
+﻿@{
+    ViewBag.Title = "Mozart V2";
+}
+
+<script>
+
+    function getDocumentDownLoad() {
+        var objectIdValues = $("#txtdownload").val();
+        $.ajax(
+        {
+            url: '',
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            data: { objectIdValue: objectIdValues },
+            method: "GET",
+            success: function (e) {
+                var url = '@Url.Action("GetFileDownloadObjectId", "Home", new { objectIdValue = "__param__" })';
+                window.location.href = url.replace('__param__', encodeURIComponent(objectIdValues));
+            }
+        });
+
+    }
+
+</script>
+
+<style>
+    .my-drop-zone {
+        border: dotted 3px lightgray;
+    }
+
+    .nv-file-over {
+        border: dotted 3px red;
+    }
+    /* Default class applied to drop zones on over */
+    .another-file-over-class {
+        border: dotted 3px green;
+    }
+
+    html, body {
+        height: 100%;
+    }
+</style>
+
+<!-- 1. nv-file-drop="" uploader="{Object}" options="{Object}" filters="{String}" -->
+<div ng-controller="AppController" nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+    @using (Ajax.BeginForm(new AjaxOptions()))
+    {
+        <br />
+        <br />
+        <br />
+        <h3>Form Metadata</h3>
+        <div class="col-md-12 well">
+            <div class="row">
+                <div class="col-xs-4">
+                    Form Number:<br />
+
+
+                    <input type="text" id="txtFormNumber" name="txtFormNumber"
+                           ng-model="form.FormNumber" class="form-control hs-input" />
+                </div>
+                <div class="col-xs-4">
+                    Form Title:<br />
+                    <input type="text" id="txtFormTitle" style="width: 350px" name="txtFormTitle"
+                           ng-model="form.FormTitle" class="hs-input form-control" />
+                </div>
+                <div class="col-xs-4">
+                    Manual Rules:<br />
+                    <input type="text" id="txtManualRules" style="width: 350px" name="txtManualRules"
+                           ng-model="form.ManualRules" class="form-control hs-input" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12" style="padding-top:10px">
+                    Tags:<br />
+                    <select multiple="multiple" ng-model="form.tags" style="width:300px !important" ng-options="tag.Id as tag.Name for tag in tags" class="form-control"></select>
+                </div>
+                </div>
+            
+            <div class="clearfix"></div>
+        </div>
+ 
+
+            <div class="col-md-12" style="margin-bottom: 40px">
+                <div class="row">
+                    <div class="col-md-12" style="margin-bottom: 40px">
+
+                        <h3>Upload Forms</h3>
+                        <p ng-show="filesAdded">{{ uploader.queue.length }} files selected.</p>
+
+                        <table class="table" ng-show="filesAdded">
+                            <thead>
+                                <tr>
+                                    <th width="50%">Name</th>
+                                    <th ng-show="uploader.isHTML5">Size</th>
+                                    <th ng-show="uploader.isHTML5">Progress</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in uploader.queue">
+                                    <td><strong>{{ item.file.name }}</strong></td>
+                                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                    <td ng-show="uploader.isHTML5">
+                                        <div class="progress" style="margin-bottom: 0;">
+                                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                    </td>
+                                    <td nowrap>
+                                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                            <span class="glyphicon glyphicon-upload"></span>Upload
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                            <span class="glyphicon glyphicon-ban-circle"></span>Cancel
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                            <span class="glyphicon glyphicon-trash"></span>Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <div ng-show="filesAdded">
+                                Upload progress:
+                                <div class="progress" style="">
+                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                </div>
+                            </div>
+                            <div ng-show="uploader.isHTML5">
+                                <!-- Example: nv-file-drop="" uploader="{Object}" options="{Object}" filters="{String}" -->
+                                <div nv-file-drop="" uploader="uploader" options="{ url: '@Url.Action("UploadAllFiles", "Home")' }">
+                                    <div nv-file-over="" uploader="uploader" over-class="another-file-over-class" class="well my-drop-zone">
+                                        Drop your files here.
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                                <span class="glyphicon glyphicon-upload"></span>Upload all
+                            </button>
+                            <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                                <span class="glyphicon glyphicon-ban-circle"></span>Cancel all
+                            </button>
+                            <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                <span class="glyphicon glyphicon-trash"></span>Remove all
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*<table border="1">
+                    <tr>
+                        <td colspan="2">Enter ObjectID to download the Document</td>
+                    </tr>
+                    <tr>
+                        <td> <input type="text" id="txtdownload" /> </td>
+                        <td> <input type="button" id="btnDownload" name="Download" value="Donwload" onclick="getDocumentDownLoad()" /></td>
+
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>*@
+
+            <br />
+            <br />
+
+            <div id="formGrid" ui-grid="formGridOptions" ui-grid-pagination style="height:490px;"></div>
+    }
+
+</div>
+
+<script>
+    //var Url_UploadFiles = '@Url.Action("UploadAllFiles", "Home")';
+</script>
+

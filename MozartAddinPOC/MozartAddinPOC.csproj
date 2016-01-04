@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B12C6758-2069-4E89-B375-FE81A8AC7051}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MozartAddinPOC</RootNamespace>
+    <AssemblyName>MozartAddinPOC</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <StartupObject>
+    </StartupObject>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>MozartAddinPOC.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="AddinExpress.WD.2005, Version=8.0.4330.2005, Culture=neutral, PublicKeyToken=e69a7e0f3592d2b8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="AddinExpress.MSO.2005">
+      <HintPath>C:\Program Files (x86)\Add-in Express\Add-in Express for .NET\Bin\AddinExpress.MSO.2005.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Vbe.Interop.dll">
+      <HintPath>Interops\Microsoft.Vbe.Interop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Office.dll">
+      <HintPath>Interops\Office.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word.dll">
+      <HintPath>Interops\Microsoft.Office.Interop.Word.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Loader\adxloader.dll.manifest" />
+    <None Include="packages.config" />
+    <!--<None Include="MozartAddinPOC.snk" /> -->
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Loader\adxloader.dll" />
+    <Content Include="Loader\adxloader64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddinModule.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AddinModule.Designer.cs">
+      <DependentUpon>AddinModule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListBoxItem.cs" />
+    <Compile Include="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MozartForm.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="SearchTaskPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchTaskPane.Designer.cs">
+      <DependentUpon>SearchTaskPane.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AddinModule.resx">
+      <DependentUpon>AddinModule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchTaskPane.resx">
+      <DependentUpon>SearchTaskPane.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

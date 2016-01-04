@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<div class="wrapper" ng-controller="DocCtrl">
+    <br />
+    <br />
+    <h3>AngularJs PDF Viewer</h3>
+    <br /><br />
+    <table>
+        <tr>
+            <td style="font-weight: bold;">Enter Object Id:</td>
+            <td>
+                <input type="text" id="txtObjectId" name="txtObjectId" ng-model="FileObjectId" class="hs-input" />
+            </td>
+            <td>
+                <button type="button" id="btnGeneratePdf" class="btn btn-danger btn-xs" ng-click="GeneratePDF()">
+                    <span class="glyphicon glyphicon-upload"></span> View PDF
+                </button>
+            </td>
+        </tr>
+    </table>
+    <div>
+        <br />
+        <br />
+        <ng-pdf template-url="~/partials123/viewer.html" canvasid="pdf" scale="page-fit" page=1></ng-pdf>
+    </div>
+</div>
+
+<script src="~/Scripts/Pdf/pdf.js"></script>
+<script src="~/Scripts/POCScripts/docCtrl.js"></script>
+<script src="~/Scripts/directives/angular-pdf.js"></script>
+<script>
+    var Url_GetPdfFile = '@Url.Action("GeneratePDFViewer", "AngularJsPdf")';
+</script>

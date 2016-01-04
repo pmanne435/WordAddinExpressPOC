@@ -1,0 +1,14 @@
+﻿@if ((string)TempData["UrlPath"] != "")
+{
+    var setFileName = (string)TempData["UrlPath"];
+    var srcUrl = "/Upload/" + setFileName;
+    <table style="width:1000px; height:1000px">
+        <tr>
+            <td>
+                <embed src="@srcUrl" width="1000px" height="750px"  type="application/pdf" />
+            </td>
+        </tr>
+    </table>
+}
+
+
